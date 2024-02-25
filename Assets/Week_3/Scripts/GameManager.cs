@@ -206,7 +206,7 @@ namespace Battleship
             timeLabel.text = string.Format("{0}:{1}", time / 60, (time % 60).ToString("00"));
         }
 
-        //void Restart() Restart falled to appear in the inspector
+        //void Restart() Restart failed to appear in the inspector
         //{
             
 
