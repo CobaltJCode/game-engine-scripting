@@ -8,8 +8,10 @@ public class control : MonoBehaviour
 
     [SerializeField] float speed;
     [SerializeField] float jumpForce;
-
-    [SerializeField] float rotation = 5.0f;
+    [SerializeField] float HorizontalRotation = 5.0f;
+    [SerializeField] float VerticalRotation = 5.0f;
+    
+    
 
     private float mouseDeltaX = 0f;
     private float mouseDeltaY = 0f;
@@ -63,16 +65,24 @@ public class control : MonoBehaviour
         
     }
 
+    private void Update()
+    {
+        HandleHorizontalRotation();
+        HandleVerticalRotation();
+    }
+
+
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         Vector2 input = move.ReadValue<Vector2>();
         //Debug.Log(input);
-        float x = (input.x * speed) + transform.position.x;
-        float y = transform.position.y;
-        float z = (input.y * speed) + transform.position.z;
-
-        transform.position = new Vector3(x,y,z);
+        //float x = (input.x * speed * transform.right) + transform.position.x;
+        //float y = transform.position.y;
+        //float z = (input.y * speed * transform.forward) + transform.position.z;
+        Vector3 dir = (input.x * transform.right) + (input.y * transform.forward);
+        dir *= speed;
+        transform.position += dir;
     }
 
     void Fire(InputAction.CallbackContext context)
@@ -82,7 +92,7 @@ public class control : MonoBehaviour
 
     void Jump(InputAction.CallbackContext context)
     {
-        Debug.Log("I jumped");
+        //Debug.Log("I jumped");
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
     }
 
@@ -94,16 +104,8 @@ public class control : MonoBehaviour
         {
             rotDir = mouseDeltaX > 0 ? 1 : -1;
 
-            transform.eulerAngles += new Vector3(0, rotation * Time.deltaTime * rotDir, 0);
+            transform.eulerAngles += new Vector3(0, HorizontalRotation * Time.deltaTime * rotDir, 0);
         }
-    }
-
-    private void FixedUpdate()
-    {
-        Vector2 input = move.ReadValue<Vector2>();
-        Vector3 direction = (input.x * transform.right) + (transform.forward * input.y);
-
-        transform.position = transform.position + (direction * speed * Time.deltaTime);
     }
 
     void HandleVerticalRotation()
@@ -114,7 +116,7 @@ public class control : MonoBehaviour
         {
             rotDir = mouseDeltaY > 0 ? -1 : 1;
 
-            cameraRotX += rotation * Time.deltaTime * rotDir;
+            cameraRotX += VerticalRotation * Time.deltaTime * rotDir;
             cameraRotX = Mathf.Clamp(cameraRotX, -45f, 45f);
 
             var targetRotation = Quaternion.Euler(Vector3.right * cameraRotX);
@@ -129,5 +131,7 @@ public class control : MonoBehaviour
 
         }
     }
+
+    
 
 }
