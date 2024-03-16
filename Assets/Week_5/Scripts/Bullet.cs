@@ -1,14 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Bullet : MonoBehaviour
 {
     [SerializeField] float m_Speed;
 
+    private int health = 100;
+
+    [SerializeField] private TextMeshProUGUI healthBar;
+
+
     private void Awake()
     {
-        Destroy(gameObject, 10f);
+        
     }
 
     // Update is called once per frame
@@ -20,5 +26,8 @@ public class Bullet : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Destroy(gameObject);
+        health--;
+        healthBar.text = string.Format("Health: {100%}", health);
+
     }
 }
