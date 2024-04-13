@@ -2,19 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using JetBrains.Annotations;
 
 public class Bullet : MonoBehaviour
 {
     [SerializeField] float m_Speed;
 
-    private int health = 100;
+    Vector3 m_Position;
 
     [SerializeField] private TextMeshProUGUI healthBar;
 
 
     private void Awake()
     {
-        
+        gameManager.RestartGameEvent.AddListener(Reset);
+        m_Position = transform.position;
     }
 
     // Update is called once per frame
@@ -23,11 +25,25 @@ public class Bullet : MonoBehaviour
         transform.Translate(Vector3.forward * m_Speed * Time.fixedDeltaTime);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision other)
     {
-        Destroy(gameObject);
-        health--;
-        healthBar.text = string.Format("Health: {100%}", health);
+        if (other.transform.tag == "Player")
+        {
+            gameObject.SetActive(false);
+            gameManager.dealDamage();
+            healthBar.text = string.Format("Health: {0}%", gameManager.health);
+        }
+        
 
     }
+
+    private void Reset()
+    {
+        gameObject.SetActive(true);
+        transform.position = m_Position;
+        healthBar.text = string.Format("Health: {0}%", gameManager.health);
+        
+    }
+
+
 }

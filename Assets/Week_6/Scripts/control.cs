@@ -25,7 +25,7 @@ public class control : MonoBehaviour
     InputAction jump;
     InputAction look;
 
-    Rigidbody rb;
+    public static Rigidbody rb;
 
     private void Awake()
     {
