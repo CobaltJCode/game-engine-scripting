@@ -11,4 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Week_12/Scenes/Saving_Data.unity
     guid: e21fa1dbac1827a48a4d5de4f67df5aa
+  - enabled: 0
+    path: Assets/Character_editer/Scenes/Character_edit.unity
+    guid: 418852c322d1e1946adad6701739ea2e
+  - enabled: 0
+    path: Assets/Character_editer/Scenes/Game.unity
+    guid: 975dc50ea60e97f489f6817dbde9b1c1
   m_configObjects: {}
